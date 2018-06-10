@@ -1,0 +1,9 @@
+# view AndroidManifest.xml #generated:24
+-keep class com.onekey.takeaway.LoginActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:34
+-keep class com.onekey.takeaway.MainActivity { <init>(...); }
+
+# view res/layout/quick_start_activity.xml #generated:16
+-keep class com.onekey.takeaway.tabview.TabView { <init>(...); }
+
