@@ -159,8 +159,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int clear=0x7f060013;
         public static final int container=0x7f06000a;
         public static final int editText=0x7f06000e;
-        public static final int et1=0x7f060031;
-        public static final int et2=0x7f060032;
+        public static final int et1=0x7f06003a;
+        public static final int et2=0x7f06003b;
         public static final int gridView=0x7f060014;
         public static final int imageView=0x7f060019;
         public static final int left=0x7f060003;
@@ -168,11 +168,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ll_parent=0x7f060008;
         public static final int ll_subparent1=0x7f060010;
         public static final int ll_subparent2=0x7f060012;
-        public static final int login=0x7f060033;
-        public static final int lv=0x7f060030;
+        public static final int login=0x7f06003c;
+        public static final int lv=0x7f060039;
         public static final int right=0x7f060004;
         public static final int save=0x7f06001d;
-        public static final int tabView=0x7f060034;
+        public static final int tabView=0x7f06003d;
         public static final int tabview_fragment_container=0x7f060001;
         public static final int tabview_id=0x7f060000;
         public static final int textView=0x7f06000d;
@@ -206,6 +206,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int textView_cancle=0x7f06000b;
         public static final int textView_confirm=0x7f06000c;
         public static final int top=0x7f060005;
+        public static final int tv1=0x7f060030;
+        public static final int tv2=0x7f060031;
+        public static final int tv3=0x7f060032;
+        public static final int tv4=0x7f060033;
+        public static final int tv5=0x7f060034;
+        public static final int tv6=0x7f060035;
+        public static final int tv7=0x7f060036;
+        public static final int tv8=0x7f060037;
+        public static final int tv9=0x7f060038;
         public static final int tv_title=0x7f060007;
     }
     public static final class layout {
@@ -308,6 +317,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int AppTheme=0x7f080001;
         public static final int customDialog=0x7f080002;
+        public static final int textViewOrder=0x7f080004;
         public static final int titleTextView=0x7f080003;
     }
     public static final class styleable {
