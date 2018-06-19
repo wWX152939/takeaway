@@ -4,24 +4,40 @@ import java.util.List;
 
 public class DeviceBean extends MsgBean{
 	
-	List<InnerDeviceBean> devicelist;
-	
+	List<InnerDeviceBean> devList;
+
+	public List<InnerDeviceBean> getDevList() {
+		return devList;
+	}
+
+
+	public void setDevList(List<InnerDeviceBean> devList) {
+		this.devList = devList;
+	}
+
+
+	@Override
+	public String toString() {
+		return "DeviceBean [devList=" + devList + "]";
+	}
+
 
 	public static class InnerDeviceBean {
-		int deviceID;
-		String normal;
+		String deviceID;
+		String name;
 		String status;
-		public int getDeviceID() {
+		public String getDeviceID() {
 			return deviceID;
 		}
-		public void setDeviceID(int deviceID) {
+		public void setDeviceID(String deviceID) {
 			this.deviceID = deviceID;
 		}
-		public String getNormal() {
-			return normal;
+		
+		public String getName() {
+			return name;
 		}
-		public void setNormal(String normal) {
-			this.normal = normal;
+		public void setName(String name) {
+			this.name = name;
 		}
 		public String getStatus() {
 			return status;
@@ -31,8 +47,8 @@ public class DeviceBean extends MsgBean{
 		}
 		@Override
 		public String toString() {
-			return "InnerDeviceBean [deviceID=" + deviceID + ", normal="
-					+ normal + ", status=" + status + "]";
+			return "InnerDeviceBean [deviceID=" + deviceID + ", name="
+					+ name + ", status=" + status + "]";
 		}
 		
 				

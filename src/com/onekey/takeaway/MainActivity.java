@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.onekey.common.Common;
 import com.onekey.common.CrashHandler;
 import com.onekey.common.LogUtils;
+import com.onekey.http.CloudManager;
 import com.onekey.takeaway.R;
 import com.onekey.takeaway.tabview.TabView;
 import com.onekey.takeaway.tabview.TabViewChild;
@@ -48,6 +49,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
     	LogUtils.d("ll1 onCreate");
+    	
+    	CloudManager.getInstance().generateShopBean();
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
