@@ -3,14 +3,24 @@ package com.onekey.takeaway;
 import mythware.http.CloudUpdateVersionServer.CloudInterface;
 import mythware.http.CloudUpdateVersionServer.CloudResponseStatus;
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ab.fragment.AbAlertDialogFragment.AbDialogOnClickListener;
+import com.ab.util.AbDialogUtil;
+import com.ab.util.AbToastUtil;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.onekey.common.LogUtils;
 import com.onekey.http.CloudManager;
 import com.onekey.takeaway.bean.FoodBean;
@@ -20,6 +30,7 @@ import com.onekey.takeaway.ux.DataListAdapter.ViewHolder;
 
 public class FragmentFood extends Fragment {
 	GridView mGridView;
+	private ImageLoader mLoader;
 	private DataListAdapter<InnerFoodBean> mDataListAdapter;
 
 	public static FragmentFood newInstance(String text) {
@@ -58,11 +69,22 @@ public class FragmentFood extends Fragment {
 		});
 	}
 	
+
+	DisplayImageOptions options = new DisplayImageOptions.Builder()
+			.showImageOnLoading(R.drawable.ic_launcher).cacheInMemory(true).cacheOnDisk(true)
+			.bitmapConfig(Bitmap.Config.RGB_565).build();
+	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(final LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater
-				.inflate(R.layout.fragment_order, container, false);
+				.inflate(R.layout.fragment_food, container, false);
+
+		ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getActivity()).build();
+		// Initialize ImageLoader with configuration.
+		mLoader = ImageLoader.getInstance();
+		mLoader.init(configuration);
+		
 		mGridView = (GridView) view.findViewById(R.id.gridView);
 		mDataListAdapter = new DataListAdapter<InnerFoodBean>(getActivity(), new DataListAdapter.ListAdapterInterface<InnerFoodBean>() {
 
@@ -78,19 +100,55 @@ public class FragmentFood extends Fragment {
 			}
 
 			@Override
-			public void initListViewItem(View convertView, ViewHolder holder,
+			public void initListViewItem(View convertView, final ViewHolder holder,
 					DataListAdapter<InnerFoodBean> adapter, int position) {
 				// TODO Auto-generated method stub
-				InnerFoodBean bean = adapter.getItem(position);
+				final InnerFoodBean bean = adapter.getItem(position);
 				
 				holder.tvs[0].setText(bean.getName());
 				holder.tvs[1].setText(bean.getPay());
 				holder.tvs[2].setText(bean.getTotal() + "");
+				holder.tvs[2].setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						final View view = inflater.inflate(R.layout.edittext, null);
+						AbDialogUtil.showAlertDialog("请输入数量", view, new AbDialogOnClickListener() {
+							
+							@Override
+							public void onPositiveClick() {
+								final EditText EditText = (EditText)view.findViewById(R.id.et);
+								if (EditText.getText().toString().isEmpty()) {
+									AbToastUtil.showToast(getActivity(), "请输入修改数量");
+									return;
+								}
+								CloudManager.getInstance().modifyFoodStatus(new CloudInterface() {
+									
+									@Override
+									public void cloudCallback(CloudResponseStatus arg0, Object arg1) {
+										if (arg0 == CloudResponseStatus.Succ) {
+//											bean.setTotal(EditText.getText().toString());
+											holder.tvs[2].setText(EditText.getText().toString());
+										}
+									}
+								}, bean.getFoodID(), EditText.getText().toString());
+							}
+							
+							@Override
+							public void onNegativeClick() {
+								AbDialogUtil.removeDialog(getActivity());
+							}
+						});
+					}
+				});
+
+				mLoader.displayImage(CloudManager.URL_CLOUD + bean.getPicURL(), holder.ivs[0], options);
 			}
 
 			@Override
 			public void initLayout(View convertView, ViewHolder holder) {
 				// TODO Auto-generated method stub
+				convertView.setBackgroundColor(getResources().getColor(R.color.title));
 				holder.tvs = new TextView[3];
 				holder.tvs[0] = (TextView)convertView.findViewById(R.id.tv1);
 				holder.tvs[1] = (TextView)convertView.findViewById(R.id.tv2);

@@ -25,7 +25,10 @@ public class DeviceBean extends MsgBean{
 	public static class InnerDeviceBean {
 		String deviceID;
 		String name;
-		String status;
+		/**
+		 * 0 空闲 1 工作  2 完成  3 故障
+		 */
+		int status;
 		public String getDeviceID() {
 			return deviceID;
 		}
@@ -39,10 +42,30 @@ public class DeviceBean extends MsgBean{
 		public void setName(String name) {
 			this.name = name;
 		}
-		public String getStatus() {
+		
+		public int getStatusInt() {
 			return status;
 		}
-		public void setStatus(String status) {
+		
+		public String getStatus() {
+			String s = "";
+			switch(status) {
+			case 0:
+				s = "空闲";
+				break;
+			case 1:
+				s = "工作";
+				break;
+			case 2:
+				s = "完成";
+				break;
+			case 3:
+				s = "故障";
+				break;
+			}
+			return s;
+		}
+		public void setStatus(int status) {
 			this.status = status;
 		}
 		@Override

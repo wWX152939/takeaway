@@ -3,11 +3,11 @@ package com.onekey.takeaway;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Window;
@@ -18,11 +18,10 @@ import com.onekey.common.Common;
 import com.onekey.common.CrashHandler;
 import com.onekey.common.LogUtils;
 import com.onekey.http.CloudManager;
-import com.onekey.takeaway.R;
 import com.onekey.takeaway.tabview.TabView;
 import com.onekey.takeaway.tabview.TabViewChild;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
 	TabView tabView;
 	String tab1 = "订单";

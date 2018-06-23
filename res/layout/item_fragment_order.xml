@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="40dp"
-	android:background="@color/title"
+	android:background="@android:color/holo_blue_light"
 	android:orientation="horizontal" >
 	<TextView 
 	    android:id="@+id/tv1"
@@ -10,7 +10,7 @@
 		android:layout_weight="1"
 		android:layout_height="match_parent"
 		style="@style/textViewOrder"
-		
+		android:text="@string/food_name"
 		 />
 	
 	<TextView 
@@ -18,6 +18,7 @@
 		android:layout_width="0dp"
 		android:layout_weight="1"
 		android:layout_height="match_parent"
+		android:text="@string/device_type"
 		style="@style/textViewOrder" />
 	<TextView 
 	    android:id="@+id/tv3"
@@ -25,6 +26,7 @@
 		android:layout_weight="1"
 		android:layout_height="match_parent"
 		style="@style/textViewOrder"
+		android:text="@string/device_id"
 		
 		 />
 	
@@ -34,6 +36,7 @@
 		android:layout_weight="1"
 		android:layout_height="match_parent"
 		style="@style/textViewOrder"
+		android:text="@string/custom"
 		
 		 />
 	<TextView 
@@ -42,6 +45,7 @@
 		android:layout_weight="1"
 		android:layout_height="match_parent"
 		style="@style/textViewOrder"
+		android:text="@string/pay"
 		
 		 />
 	
@@ -51,6 +55,7 @@
 		android:layout_weight="1"
 		android:layout_height="match_parent"
 		style="@style/textViewOrder"
+		android:text="@string/door_id"
 		
 		 />
 	<TextView 
@@ -59,23 +64,8 @@
 		android:layout_weight="1"
 		android:layout_height="match_parent"
 		style="@style/textViewOrder"
+		android:text="@string/status"
 		
 		 />
 	
-	<TextView 
-	    android:id="@+id/tv8"
-		android:layout_width="0dp"
-		android:layout_weight="1"
-		android:layout_height="match_parent"
-		style="@style/textViewOrder"
-		
-		 />
-	<TextView 
-	    android:id="@+id/tv9"
-		android:layout_width="0dp"
-		android:layout_weight="1"
-		android:layout_height="match_parent"
-		style="@style/textViewOrder"
-		
-		 />
 </LinearLayout>

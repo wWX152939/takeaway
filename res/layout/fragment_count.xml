@@ -4,12 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <include layout="@layout/item_fragment_order"
-        android:background="@android:color/holo_blue_light"/>
-    <com.ab.view.pullview.AbPullToRefreshView 
-	    xmlns:tools="http://schemas.android.com/tools"
-	    android:id="@+id/refreshview"
+    <include 
+        
 	    android:layout_width="match_parent"
+	    android:layout_height="40dp"
+	    layout="@layout/item_fragment_shop_order"/>
+
+    <com.ab.view.pullview.AbPullToRefreshView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/refreshview"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="12" >
 	
@@ -25,7 +29,6 @@
         android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_weight="1"
-	    android:layout_marginTop="1dp"
 	    android:background="@android:color/holo_green_light"
 	    android:orientation="horizontal">
         <TextView 
@@ -34,7 +37,7 @@
 			android:layout_weight="1"
 			android:layout_height="match_parent"
 			style="@style/textViewOrder"
-			android:text="@string/unfinished"
+			android:text="@string/name"
 			
 			 />
 		
@@ -43,7 +46,16 @@
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"
-			android:text="@string/finished"
+			android:text="@string/status"
 			style="@style/textViewOrder" />
+		<TextView 
+		    android:id="@+id/tv13"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="match_parent"
+			android:text="@string/device_id"
+			style="@style/textViewOrder"
+			
+			 />
     </LinearLayout>
 </LinearLayout>

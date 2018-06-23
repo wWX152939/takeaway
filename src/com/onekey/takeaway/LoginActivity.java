@@ -28,6 +28,8 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.login_activity);
 		final EditText editText1 = (EditText)findViewById(R.id.et1);
 		final EditText editText2 = (EditText)findViewById(R.id.et2);
+		editText1.setText("user01");
+		editText2.setText("123456");
 		TextView tvLogin = (TextView)findViewById(R.id.login);
 		tvLogin.setOnClickListener(new OnClickListener() {
 			
@@ -55,6 +57,7 @@ public class LoginActivity extends Activity {
 			}
 				
 		});
+		tvLogin.performClick();
 	}
 	
 

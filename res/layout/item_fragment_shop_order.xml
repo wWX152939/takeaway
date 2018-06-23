@@ -10,8 +10,7 @@
 		android:layout_weight="1"
 		android:layout_height="match_parent"
 		style="@style/textViewOrder"
-		android:text="@string/name"
-		
+		android:text="@string/order_number"
 		 />
 	
 	<TextView 
@@ -19,18 +18,24 @@
 		android:layout_width="0dp"
 		android:layout_weight="1"
 		android:layout_height="match_parent"
-		android:text="@string/device_id"
+		android:text="@string/custom"
 		style="@style/textViewOrder" />
 	<TextView 
 	    android:id="@+id/tv3"
 		android:layout_width="0dp"
 		android:layout_weight="1"
 		android:layout_height="match_parent"
-		android:text="@string/status"
-		android:drawableRight="@drawable/icon_modify"
-		android:paddingRight="20dp"
 		style="@style/textViewOrder"
-		
+		android:text="@string/food_name"
 		 />
 	
+	<TextView 
+	    android:id="@+id/tv4"
+		android:layout_width="0dp"
+		android:layout_weight="1"
+		android:layout_height="match_parent"
+		style="@style/textViewOrder"
+		android:text="@string/pay"
+		
+		 />
 </LinearLayout>

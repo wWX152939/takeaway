@@ -27,8 +27,6 @@
 		android:layout_weight="1"
 		android:layout_height="match_parent"
 		android:text="@string/status"
-		android:drawableRight="@drawable/icon_modify"
-		android:paddingRight="20dp"
 		style="@style/textViewOrder"
 		
 		 />

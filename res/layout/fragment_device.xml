@@ -4,13 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <include layout="@layout/item_fragment_food_title"
+    <include 
+	    android:layout_width="match_parent"
+	    android:layout_height="40dp"
+        layout="@layout/item_fragment_devices_title"
         android:background="@android:color/holo_blue_light"/>
 	
     <GridView
         android:id="@+id/gridView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       	android:listSelector="@null"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@null"
        />
+    
 </LinearLayout>

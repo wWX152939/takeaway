@@ -23,15 +23,6 @@
 	    <item name="android:windowContentOverlay">@null</item>
 	</style>
 	
-    <style name="titleTextView">
-		<item name="android:layout_marginTop">10dp</item>
-		<item name="android:paddingLeft">@dimen/title_padding</item>
-		<item name="android:paddingRight">@dimen/title_padding</item>
-		<item name="android:textSize">@dimen/status_title_size</item>
-		<item name="android:textColor">#ffffff</item>
-		<item name="android:background">#29242c</item>
-	</style>
-	
     <style name="textViewOrder">
 		<item name="android:text">@string/status_jd</item>
 		<item name="android:textColor">@android:color/white</item>
