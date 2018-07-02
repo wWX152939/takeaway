@@ -9,6 +9,12 @@ public class DeviceBean extends MsgBean{
 	public List<InnerDeviceBean> getDevList() {
 		return devList;
 	}
+	
+	public void addDev(InnerDeviceBean dev) {
+		if (dev != null && this.devList != null) {
+			this.devList.add(dev);
+		}
+	}
 
 
 	public void setDevList(List<InnerDeviceBean> devList) {

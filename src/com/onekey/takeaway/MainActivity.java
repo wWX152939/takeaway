@@ -77,7 +77,7 @@ public class MainActivity extends FragmentActivity {
 		TabViewChild tabViewChild03 = new TabViewChild(R.drawable.tab01_sel,
 				R.drawable.tab01_unsel, tab3, FragmentFood.newInstance(tab3));
 		TabViewChild tabViewChild04 = new TabViewChild(R.drawable.tab01_sel,
-				R.drawable.tab01_unsel, tab3, FragmentCount.newInstance(tab4));
+				R.drawable.tab01_unsel, tab4, FragmentCount.newInstance(tab4));
 		tabViewChildList.add(tabViewChild01);
 		tabViewChildList.add(tabViewChild02);
 		tabViewChildList.add(tabViewChild03);
