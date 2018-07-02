@@ -16,6 +16,7 @@
     <com.onekey.takeaway.tabview.TabView
         android:id="@+id/tabView"
         android:paddingTop="2dp"
+        android:gravity="left"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

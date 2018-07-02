@@ -24,10 +24,9 @@ import com.onekey.takeaway.tabview.TabViewChild;
 public class MainActivity extends FragmentActivity {
 
 	TabView tabView;
-	String tab1 = "订单";
-	String tab2 = "设备";
-	String tab3 = "菜品";
-	String tab4 = "统计";
+	String tab1 = "操作";
+	String tab2 = "库存";
+	String tab3 = "统计";
 	
 	private TextView mTextView;
 	
@@ -73,19 +72,15 @@ public class MainActivity extends FragmentActivity {
 		TabViewChild tabViewChild01 = new TabViewChild(R.drawable.tab03_sel,
 				R.drawable.tab03_unsel, tab1, mFragmentOrder);
 		TabViewChild tabViewChild02 = new TabViewChild(R.drawable.tab02_sel,
-				R.drawable.tab02_unsel, tab2, FragmentDevices.newInstance(tab2));
-		TabViewChild tabViewChild03 = new TabViewChild(R.drawable.tab01_sel,
-				R.drawable.tab01_unsel, tab3, FragmentFood.newInstance(tab3));
-		TabViewChild tabViewChild04 = new TabViewChild(R.drawable.tab01_sel,
-				R.drawable.tab01_unsel, tab3, FragmentCount.newInstance(tab4));
+				R.drawable.tab02_unsel, tab2, FragmentStore.newInstance(tab2));
+		TabViewChild tabViewChild03 = new TabViewChild(R.drawable.tab03_sel,
+				R.drawable.tab03_unsel, tab3, FragmentCount.newInstance(tab3));
 		tabViewChildList.add(tabViewChild01);
 		tabViewChildList.add(tabViewChild02);
 		tabViewChildList.add(tabViewChild03);
-		tabViewChildList.add(tabViewChild04);
 		// end add data
 		tabView.setTabViewDefaultPosition(0);
 		tabView.setTextViewSelectedColor(getResources().getColor(R.color.title));
-		tabView.setTabViewGravity(Gravity.TOP);
 		tabView.setTabViewChild(tabViewChildList, getFragmentManager());
 		tabView.setOnTabChildClickListener(new TabView.OnTabChildClickListener() {
 			@Override

@@ -34,7 +34,7 @@
 			android:layout_weight="1"
 			android:layout_height="match_parent"
 			style="@style/textViewOrder"
-			android:text="@string/unfinished"
+			android:text="@string/cfj"
 			
 			 />
 		
@@ -43,7 +43,15 @@
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"
-			android:text="@string/finished"
+			android:text="@string/stj"
+			style="@style/textViewOrder" />
+		
+		<TextView 
+		    android:id="@+id/tv13"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="match_parent"
+			android:text="@string/pcg"
 			style="@style/textViewOrder" />
     </LinearLayout>
 </LinearLayout>

@@ -1,9 +1,14 @@
+# view res/layout/fragment_count.xml #generated:13
+# view res/layout/fragment_order.xml #generated:9
+-keep class com.ab.view.pullview.AbPullToRefreshView { <init>(...); }
+
 # view AndroidManifest.xml #generated:34
 -keep class com.onekey.takeaway.LoginActivity { <init>(...); }
 
 # view AndroidManifest.xml #generated:23
 -keep class com.onekey.takeaway.MainActivity { <init>(...); }
 
+# view res/layout/fragment_store.xml #generated:15
 # view res/layout/quick_start_activity.xml #generated:16
 -keep class com.onekey.takeaway.tabview.TabView { <init>(...); }
 

@@ -26,5 +26,9 @@
     
     <string name="unfinished">未完成</string>
     <string name="finished">已完成</string>
+    
+    <string name="cfj">炒饭机</string>
+    <string name="stj">售汤机</string>
+    <string name="pcg">配餐柜</string>
 
 </resources>

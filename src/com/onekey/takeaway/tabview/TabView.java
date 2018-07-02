@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.onekey.common.LogUtils;
 import com.onekey.takeaway.R;
 
 public class TabView extends RelativeLayout {
@@ -143,13 +144,17 @@ public class TabView extends RelativeLayout {
 
 		}
 	}
+	
+	protected int getTabViewId() {
+		return R.id.tabview_fragment_container;
+	}
 
 	private void initView(Context context) {
 		tabview = new LinearLayout(context);
 		tabview.setId(R.id.tabview_id);
-
+		mTabViewGravity = getGravity();
 		mFragmentContainer = new FrameLayout(context);
-		mFragmentContainer.setId(R.id.tabview_fragment_container);
+		mFragmentContainer.setId(getTabViewId());
 		RelativeLayout.LayoutParams fragmentContainerParams = new RelativeLayout.LayoutParams(
 				RMP, RMP);
 		RelativeLayout.LayoutParams tabviewParams = null;
@@ -199,12 +204,12 @@ public class TabView extends RelativeLayout {
 		}
 		if (mTabViewDefaultPosition >= mTabViewChildList.size()) {
 			mSupportFragmentManager.beginTransaction()
-					.add(R.id.tabview_fragment_container, mFragments[0])
+					.add(getTabViewId(), mFragments[0])
 					.show(mFragments[0]).commit();
 		} else {
 			mSupportFragmentManager
 					.beginTransaction()
-					.add(R.id.tabview_fragment_container,
+					.add(getTabViewId(),
 							mFragments[mTabViewDefaultPosition])
 					.show(mFragments[mTabViewDefaultPosition]).commit();
 		}
@@ -338,7 +343,7 @@ public class TabView extends RelativeLayout {
 					.beginTransaction();
 			trx.hide(mFragments[currentTabIndex]);
 			if (!mFragments[index].isAdded()) {
-				trx.add(R.id.tabview_fragment_container, mFragments[index]);
+				trx.add(getTabViewId(), mFragments[index]);
 			}
 			trx.show(mFragments[index]).commitAllowingStateLoss();
 		}
