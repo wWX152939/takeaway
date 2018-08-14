@@ -1,38 +1,39 @@
 package com.onekey.takeaway.bean;
 
 public class ModifyFoodBean extends TokenBean {
-	String shopID;
-	String foodID;
-	String number;
-
-	public String getShopID() {
-		return shopID;
+	String storeId;
+	String foodId;
+	int type;
+	int total;
+	public String getStoreId() {
+		return storeId;
 	}
-
-	public void setShopID(String shopID) {
-		this.shopID = shopID;
+	public void setStoreId(String storeId) {
+		this.storeId = storeId;
 	}
-
-	public String getFoodID() {
-		return foodID;
+	public String getFoodId() {
+		return foodId;
 	}
-
-	public void setFoodID(String foodID) {
-		this.foodID = foodID;
+	public void setFoodId(String foodId) {
+		this.foodId = foodId;
 	}
-
-	public String getNumber() {
-		return number;
+	public int getType() {
+		return type;
 	}
-
-	public void setNumber(String number) {
-		this.number = number;
+	public void setType(int type) {
+		this.type = type;
 	}
-
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
 	@Override
 	public String toString() {
-		return "ModifyFoodBean [shopID=" + shopID + ", foodID=" + foodID
-				+ ", number=" + number + "]";
+		return "ModifyFoodBean [storeId=" + storeId + ", foodId=" + foodId
+				+ ", type=" + type + ", total=" + total + "]";
 	}
+
 
 }

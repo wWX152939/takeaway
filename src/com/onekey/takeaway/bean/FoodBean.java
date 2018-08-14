@@ -4,66 +4,51 @@ import java.util.List;
 
 public class FoodBean extends MsgBean{
 	
-	List<InnerFoodBean> foodlist;
+	List<InnerFoodBean> stocks;
 	
 
 	public List<InnerFoodBean> getFoodlist() {
-		return foodlist;
+		return stocks;
 	}
 
 
 	public void setFoodlist(List<InnerFoodBean> foodlist) {
-		this.foodlist = foodlist;
+		this.stocks = foodlist;
 	}
 
 
 	@Override
 	public String toString() {
-		return "FoodBean [foodlist=" + foodlist + "]";
+		return "FoodBean [foodlist=" + stocks + "]";
 	}
 
 
 	public static class InnerFoodBean {
-		String foodID;
-		int total;
-		String name;
-		String pay;
-		String picURL;
-		public String getFoodID() {
-			return foodID;
+		String foodId;
+		int stock;
+		String foodName;
+		public String getFoodId() {
+			return foodId;
 		}
-		public void setFoodID(String foodID) {
-			this.foodID = foodID;
+		public void setFoodId(String foodId) {
+			this.foodId = foodId;
 		}
-		public int getTotal() {
-			return total;
+		public int getStock() {
+			return stock;
 		}
-		public void setTotal(int total) {
-			this.total = total;
+		public void setStock(int stock) {
+			this.stock = stock;
 		}
-		public String getName() {
-			return name;
+		public String getFoodName() {
+			return foodName;
 		}
-		public void setName(String name) {
-			this.name = name;
-		}
-		public String getPay() {
-			return pay;
-		}
-		public void setPay(String pay) {
-			this.pay = pay;
-		}
-		public String getPicURL() {
-			return picURL;
-		}
-		public void setPicURL(String picURL) {
-			this.picURL = picURL;
+		public void setFoodName(String foodName) {
+			this.foodName = foodName;
 		}
 		@Override
 		public String toString() {
-			return "InnerFoodBean [foodID=" + foodID + ", total=" + total
-					+ ", name=" + name + ", pay=" + pay + ", picURL=" + picURL
-					+ "]";
+			return "InnerFoodBean [foodId=" + foodId + ", stock=" + stock
+					+ ", foodName=" + foodName + "]";
 		}
 		
 		

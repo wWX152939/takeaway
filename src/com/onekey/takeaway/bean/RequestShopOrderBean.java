@@ -2,7 +2,7 @@ package com.onekey.takeaway.bean;
 
 public class RequestShopOrderBean extends TokenBean {
 	String shopID;
-	int pageIndex;
+	String orderId;
 
 	public String getShopID() {
 		return shopID;
@@ -12,18 +12,19 @@ public class RequestShopOrderBean extends TokenBean {
 		this.shopID = shopID;
 	}
 
-	public int getPageIndex() {
-		return pageIndex;
+
+	public String getOrderId() {
+		return orderId;
 	}
 
-	public void setPageIndex(int pageIndex) {
-		this.pageIndex = pageIndex;
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
 	@Override
 	public String toString() {
-		return "RequestShopOrderBean [shopID=" + shopID + ", pageIndex="
-				+ pageIndex + "]";
+		return "RequestShopOrderBean [shopID=" + shopID + ", orderId="
+				+ orderId + "]";
 	}
 
 }

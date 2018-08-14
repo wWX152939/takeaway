@@ -101,14 +101,13 @@ public class FragmentFood extends Fragment {
 
 			@Override
 			public void initListViewItem(View convertView, final ViewHolder holder,
-					DataListAdapter<InnerFoodBean> adapter, int position) {
+					DataListAdapter<InnerFoodBean> adapter, final int position) {
 				// TODO Auto-generated method stub
 				final InnerFoodBean bean = adapter.getItem(position);
 				
-				holder.tvs[0].setText(bean.getName());
-				holder.tvs[1].setText(bean.getPay());
-				holder.tvs[2].setText(bean.getTotal() + "");
-				holder.tvs[2].setOnClickListener(new OnClickListener() {
+				holder.tvs[0].setText(bean.getFoodName());
+				holder.tvs[1].setText(bean.getStock() + "");
+				holder.tvs[1].setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
@@ -122,16 +121,31 @@ public class FragmentFood extends Fragment {
 									AbToastUtil.showToast(getActivity(), "请输入修改数量");
 									return;
 								}
-								CloudManager.getInstance().modifyFoodStatus(new CloudInterface() {
+								int number = Integer.parseInt(EditText.getText().toString());
+								int type = 1;
+								int stock = mDataListAdapter.getItem(position).getStock();
+								
+								if (number == stock) {
+									return;
+								}
+								if (number > stock) {
+									number -= stock;
+								} else {
+									type = 2;
+									number = stock - number;
+								}
+								CloudManager.getInstance().modifyFood(new CloudInterface() {
 									
 									@Override
 									public void cloudCallback(CloudResponseStatus arg0, Object arg1) {
 										if (arg0 == CloudResponseStatus.Succ) {
 //											bean.setTotal(EditText.getText().toString());
 											holder.tvs[2].setText(EditText.getText().toString());
+											int num = Integer.parseInt(EditText.getText().toString());
+											mDataListAdapter.getItem(position).setStock(num);
 										}
 									}
-								}, bean.getFoodID(), EditText.getText().toString());
+								}, bean.getFoodId(), type, number);
 							}
 							
 							@Override
@@ -142,17 +156,17 @@ public class FragmentFood extends Fragment {
 					}
 				});
 
-				mLoader.displayImage(CloudManager.URL_CLOUD + bean.getPicURL(), holder.ivs[0], options);
+//				mLoader.displayImage(CloudManager.URL_CLOUD + bean.getPicURL(), holder.ivs[0], options);
 			}
 
 			@Override
 			public void initLayout(View convertView, ViewHolder holder) {
 				// TODO Auto-generated method stub
 				convertView.setBackgroundColor(getResources().getColor(R.color.title));
-				holder.tvs = new TextView[3];
+				holder.tvs = new TextView[2];
 				holder.tvs[0] = (TextView)convertView.findViewById(R.id.tv1);
 				holder.tvs[1] = (TextView)convertView.findViewById(R.id.tv2);
-				holder.tvs[2] = (TextView)convertView.findViewById(R.id.tv3);
+//				holder.tvs[2] = (TextView)convertView.findViewById(R.id.tv3);
 				holder.ivs = new ImageView[1];
 				holder.ivs[0] = (ImageView)convertView.findViewById(R.id.iv);
 				

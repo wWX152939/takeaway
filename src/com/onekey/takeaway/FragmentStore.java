@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.onekey.common.LogUtils;
 import com.onekey.takeaway.tabview.TabView;
@@ -19,10 +18,10 @@ import com.onekey.takeaway.tabview.TabViewChild;
 
 public class FragmentStore extends Fragment {
 	TabView tabView;
-	String tab1 = "炒饭机";
-	String tab2 = "售汤机";
-	String tab3 = "人工菜品";
-	String tab4 = "智能配餐柜";
+	public static final String tab1 = "炒饭机";
+	public static final String tab2 = "售汤机";
+	public static final String tab3 = "人工菜品";
+	public static final String tab4 = "智能配餐柜";
 
 	public static FragmentStore newInstance(String text) {
 		FragmentStore fragmentCommon = new FragmentStore();
@@ -45,6 +44,7 @@ public class FragmentStore extends Fragment {
 		View view = inflater
 				.inflate(R.layout.fragment_store, container, false);
 		tabView = (TabView) view.findViewById(R.id.tabView);
+		tabView.setFragmentId(1003);
 		
 		// start add data
 		List<TabViewChild> tabViewChildList = new ArrayList<TabViewChild>();
@@ -54,12 +54,12 @@ public class FragmentStore extends Fragment {
 				R.drawable.tab02_unsel, tab2, FragmentDevices.newInstance(tab2));
 		TabViewChild tabViewChild03 = new TabViewChild(R.drawable.tab03_sel,
 				R.drawable.tab03_unsel, tab3, FragmentFood.newInstance(tab3));
-		TabViewChild tabViewChild04 = new TabViewChild(R.drawable.tab03_sel,
-				R.drawable.tab03_unsel, tab4, FragmentFood.newInstance(tab4));
+//		TabViewChild tabViewChild04 = new TabViewChild(R.drawable.tab03_sel,
+//				R.drawable.tab03_unsel, tab4, FragmentCabinet.newInstance(tab4));
 		tabViewChildList.add(tabViewChild01);
 		tabViewChildList.add(tabViewChild02);
 		tabViewChildList.add(tabViewChild03);
-		tabViewChildList.add(tabViewChild04);
+//		tabViewChildList.add(tabViewChild04);
 		// end add data
 		tabView.setTabViewDefaultPosition(0);
 		tabView.setTextViewSelectedColor(getResources().getColor(R.color.title));

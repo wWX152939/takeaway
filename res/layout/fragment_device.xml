@@ -10,11 +10,9 @@
         layout="@layout/item_fragment_devices_title"
         android:background="@android:color/holo_blue_light"/>
 	
-    <GridView
-        android:id="@+id/gridView"
+    <ExpandableListView
+        android:id="@+id/expandable_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:listSelector="@null"
-       />
+        android:layout_height="match_parent"/>
     
 </LinearLayout>

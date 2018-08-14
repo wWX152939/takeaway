@@ -31,15 +31,26 @@ public class OrderBean extends MsgBean{
 	
 	public static class InnerOrderBean {
 		String custom;
-		String deviceType;
+		int devType;
 		String xiaocai;
 		String tang;
 		int doorId;
 		int state;
-		String food;
-		int pay;
-		int deviceId;
+		String foodName;
+		String foodId;
+		String pay;
+		int devId;
+		int orderId;
+		String genTime;
 		
+		public String getGenTime() {
+			return genTime;
+		}
+
+		public void setGenTime(String genTime) {
+			this.genTime = genTime;
+		}
+
 		public String getStatus() {
 			String ret = "";
 			switch (state) {
@@ -70,19 +81,19 @@ public class OrderBean extends MsgBean{
 			
 		}
 				
-		public InnerOrderBean(String custom, String deviceType, String xiaocai,
-				String tang, int doorId, int state, String food, int pay,
+		public InnerOrderBean(String custom, int deviceType, String xiaocai,
+				String tang, int doorId, int state, String food, String pay,
 				int deviceId) {
 			super();
 			this.custom = custom;
-			this.deviceType = deviceType;
+			this.devType = deviceType;
 			this.xiaocai = xiaocai;
 			this.tang = tang;
 			this.doorId = doorId;
 			this.state = state;
-			this.food = food;
+			this.foodName = food;
 			this.pay = pay;
-			this.deviceId = deviceId;
+			this.devId = deviceId;
 		}
 
 		public String getCustom() {
@@ -93,13 +104,6 @@ public class OrderBean extends MsgBean{
 			this.custom = custom;
 		}
 
-		public String getDeviceType() {
-			return deviceType;
-		}
-
-		public void setDeviceType(String deviceType) {
-			this.deviceType = deviceType;
-		}
 
 		public String getXiaocai() {
 			return xiaocai;
@@ -155,36 +159,63 @@ public class OrderBean extends MsgBean{
 			this.state = state;
 		}
 
-		public String getFood() {
-			return food;
+
+		public String getFoodName() {
+			return foodName;
 		}
 
-		public void setFood(String food) {
-			this.food = food;
+		public void setFoodName(String foodName) {
+			this.foodName = foodName;
 		}
 
-		public int getPay() {
+		public String getFoodId() {
+			return foodId;
+		}
+
+		public void setFoodId(String foodId) {
+			this.foodId = foodId;
+		}
+
+		public String getPay() {
 			return pay;
 		}
 
-		public void setPay(int pay) {
+		public void setPay(String pay) {
 			this.pay = pay;
 		}
 
-		public int getDeviceId() {
-			return deviceId;
+		public int getDevType() {
+			return devType;
 		}
 
-		public void setDeviceId(int deviceId) {
-			this.deviceId = deviceId;
+		public void setDevType(int devType) {
+			this.devType = devType;
+		}
+
+		public int getDevId() {
+			return devId;
+		}
+
+		public void setDevId(int devId) {
+			this.devId = devId;
+		}
+
+		public int getOrderId() {
+			return orderId;
+		}
+
+		public void setOrderId(int orderId) {
+			this.orderId = orderId;
 		}
 
 		@Override
 		public String toString() {
-			return "InnerOrderBean [custom=" + custom + ", deviceType="
-					+ deviceType + ", xiaocai=" + xiaocai + ", tang=" + tang
-					+ ", doorId=" + doorId + ", state=" + state + ", food="
-					+ food + ", pay=" + pay + ", deviceId=" + deviceId + "]";
+			return "InnerOrderBean [custom=" + custom + ", devType=" + devType
+					+ ", xiaocai=" + xiaocai + ", tang=" + tang + ", doorId="
+					+ doorId + ", state=" + state + ", foodName=" + foodName
+					+ ", foodId=" + foodId + ", pay=" + pay + ", devId="
+					+ devId + ", orderId=" + orderId + ", genTime=" + genTime
+					+ "]";
 		}
 
 		

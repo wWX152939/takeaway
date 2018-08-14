@@ -6,7 +6,7 @@ public class ShopOrderBean extends MsgBean{
 	
 	List<InnerShopOrderBean> orderList;
 	String totalPage;
-	int payTotal;
+	String payTotal;
 	
 
 	public List<InnerShopOrderBean> getOrderList() {
@@ -29,12 +29,12 @@ public class ShopOrderBean extends MsgBean{
 	}
 
 
-	public int getPayTotal() {
+	public String getPayTotal() {
 		return payTotal;
 	}
 
 
-	public void setPayTotal(int payTotal) {
+	public void setPayTotal(String payTotal) {
 		this.payTotal = payTotal;
 	}
 
@@ -49,8 +49,22 @@ public class ShopOrderBean extends MsgBean{
 	public static class InnerShopOrderBean {
 		String number;
 		String custom;
-		int pay;
+		String pay;
 		String food;
+		int orderId; 
+		String genTime;
+		public int getOrderId() {
+			return orderId;
+		}
+		public void setOrderId(int orderId) {
+			this.orderId = orderId;
+		}
+		public String getGenTime() {
+			return genTime;
+		}
+		public void setGenTime(String genTime) {
+			this.genTime = genTime;
+		}
 		public String getNumber() {
 			return number;
 		}
@@ -63,10 +77,10 @@ public class ShopOrderBean extends MsgBean{
 		public void setCustom(String custom) {
 			this.custom = custom;
 		}
-		public int getPay() {
+		public String getPay() {
 			return pay;
 		}
-		public void setPay(int pay) {
+		public void setPay(String pay) {
 			this.pay = pay;
 		}
 		public String getFood() {
@@ -77,8 +91,9 @@ public class ShopOrderBean extends MsgBean{
 		}
 		@Override
 		public String toString() {
-			return "InnerShopOrderBean [number=" + number + ", custom=" + custom
-					+ ", pay=" + pay + ", food=" + food + "]";
+			return "InnerShopOrderBean [number=" + number + ", custom="
+					+ custom + ", pay=" + pay + ", food=" + food + ", orderId="
+					+ orderId + ", genTime=" + genTime + "]";
 		}
 		
 		

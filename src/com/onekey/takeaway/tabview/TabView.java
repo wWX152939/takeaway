@@ -145,7 +145,16 @@ public class TabView extends RelativeLayout {
 		}
 	}
 	
+	private int mId;
+	public void setFragmentId(int id) {
+//		mFragmentContainer.setId(id);
+//		mId = id;
+	}
+	
 	protected int getTabViewId() {
+		if (mId != 0) {
+			return mId;
+		}
 		return R.id.tabview_fragment_container;
 	}
 

@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,7 +29,6 @@ public class MainActivity extends FragmentActivity {
 	
 	private TextView mTextView;
 	
-	private FragmentOrder mFragmentOrder;
 	
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -65,12 +63,12 @@ public class MainActivity extends FragmentActivity {
 		mHandler.sendEmptyMessageDelayed(1, 1000);
 
 		tabView = (TabView) findViewById(R.id.tabView);
+		tabView.setFragmentId(1001);
 		
-		mFragmentOrder = FragmentOrder.newInstance(tab1);
 		// start add data
 		List<TabViewChild> tabViewChildList = new ArrayList<TabViewChild>();
 		TabViewChild tabViewChild01 = new TabViewChild(R.drawable.tab03_sel,
-				R.drawable.tab03_unsel, tab1, mFragmentOrder);
+				R.drawable.tab03_unsel, tab1, FragmentOperation.newInstance(tab1));
 		TabViewChild tabViewChild02 = new TabViewChild(R.drawable.tab02_sel,
 				R.drawable.tab02_unsel, tab2, FragmentStore.newInstance(tab2));
 		TabViewChild tabViewChild03 = new TabViewChild(R.drawable.tab03_sel,
@@ -124,7 +122,6 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		mFragmentOrder.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	

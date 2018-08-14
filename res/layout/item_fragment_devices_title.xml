@@ -10,7 +10,7 @@
 		android:layout_weight="1"
 		android:layout_height="match_parent"
 		style="@style/textViewOrder"
-		android:text="@string/name"
+		android:text="@string/device_id"
 		
 		 />
 	
@@ -19,14 +19,14 @@
 		android:layout_width="0dp"
 		android:layout_weight="1"
 		android:layout_height="match_parent"
-		android:text="@string/device_id"
+		android:text="@string/name"
 		style="@style/textViewOrder" />
 	<TextView 
 	    android:id="@+id/tv3"
 		android:layout_width="0dp"
 		android:layout_weight="1"
 		android:layout_height="match_parent"
-		android:text="@string/status"
+		android:text="@string/total"
 		style="@style/textViewOrder"
 		
 		 />

@@ -12,6 +12,13 @@
 		style="@style/textViewOrder"
 		android:text="@string/order_number"
 		 />
+	<TextView 
+	    android:id="@+id/tv11"
+		android:layout_width="0dp"
+		android:layout_weight="1"
+		android:layout_height="match_parent"
+		android:text="@string/pay_time"
+		style="@style/textViewOrder" />
 	
 	<TextView 
 	    android:id="@+id/tv2"

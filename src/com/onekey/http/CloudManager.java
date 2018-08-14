@@ -1,5 +1,8 @@
 package com.onekey.http;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mythware.common.LogUtils;
 import mythware.http.CloudUpdateVersionServer.CloudInterface;
 import mythware.http.CloudUpdateVersionServer.CloudResponseStatus;
@@ -7,17 +10,26 @@ import mythware.http.DataManagerInterface;
 import mythware.http.DataUtils;
 import mythware.http.NetworkAsyncTask;
 
+import com.onekey.takeaway.bean.CabinetBean;
 import com.onekey.takeaway.bean.DeviceBean;
+import com.onekey.takeaway.bean.DeviceFoodBean;
+import com.onekey.takeaway.bean.DoorBean;
 import com.onekey.takeaway.bean.FoodBean;
 import com.onekey.takeaway.bean.LoginBean;
+import com.onekey.takeaway.bean.ModifyCabinetBean;
 import com.onekey.takeaway.bean.ModifyDevBean;
+import com.onekey.takeaway.bean.ModifyDeviceFoodBean;
+import com.onekey.takeaway.bean.ModifyDeviceFoodBean.InnerModifyDeviceFoodBean;
 import com.onekey.takeaway.bean.ModifyFoodBean;
 import com.onekey.takeaway.bean.MsgBean;
 import com.onekey.takeaway.bean.OrderBean;
 import com.onekey.takeaway.bean.RequestDevBean;
 import com.onekey.takeaway.bean.RequestFoodBean;
+import com.onekey.takeaway.bean.RequestFoodStoreBean;
 import com.onekey.takeaway.bean.RequestOrderListBean;
 import com.onekey.takeaway.bean.RequestShopOrderBean;
+import com.onekey.takeaway.bean.RequestWithStoreIdBean;
+import com.onekey.takeaway.bean.ResponseFoodStoreBean;
 import com.onekey.takeaway.bean.ShopBean;
 import com.onekey.takeaway.bean.ShopOrderBean;
 import com.onekey.takeaway.bean.TokenBean;
@@ -27,12 +39,20 @@ public class CloudManager {
 	private final String URL_CLOUD_PAD = "http://140.143.161.135:8080/auto-sell-web/pad";
 	private final String URL_login = URL_CLOUD_PAD + "/login/login.do";
 	private final String URL_request_info = URL_CLOUD_PAD + "/shop/orderList.do";
-	private final String URL_request_foodlist = URL_CLOUD_PAD + "/shop/foodList.do";
 	private final String URL_modify_food = URL_CLOUD_PAD + "/shop/modifyFood.do";
 	private final String URL_request_shop_devices = URL_CLOUD_PAD + "/dev/list.do";
 	private final String URL_modify_device_status = URL_CLOUD_PAD + "/dev/modifystatus.do";
 	private final String URL_request_order_list = URL_CLOUD_PAD + "/shop/requestOrdersByState.do";
 	private final String URL_logout = URL_CLOUD_PAD + "/logout/logout.do";
+	
+
+	private final String URL_request_cabinet_info = URL_CLOUD_PAD + "/cabinet/detailInfo.do";
+	private final String URL_request_machine_food_store = URL_CLOUD_PAD + "/shop/machineMadeStock.do";
+	private final String URL_request_shop_food_store = URL_CLOUD_PAD + "/shop/manMadeStock.do";
+	private final String URL_modify_machine_food_store = URL_CLOUD_PAD + "/slot/modifySlotStock.do";
+	private final String URL_modify_cabinet_status = URL_CLOUD_PAD + "/door/modifyDoorStatus.do";
+	private final String URL_find_unused_cabinet = URL_CLOUD_PAD + "/cabinet/unusedDoor.do";
+	private final String URL_request_food_store = URL_CLOUD_PAD + "/store/stockFromFoodAndStore.do";
 	
 	private ShopBean mShopBean;
 	
@@ -43,6 +63,7 @@ public class CloudManager {
 	public void generateShopBean() {
 		mShopBean = new ShopBean();
 		mShopBean.setShopID("6fdf23bd-9172-4775-b5ac-8b5efd6c677f");
+//		mShopBean.setShopID("1");
 		mShopBean.setTitle("1号店");
 		mShopBean.setInfo("全世界最好的自动化零售店");
 		mShopBean.setToken("eddc225a-12c4-4911-936a-42c3e663bb64");
@@ -61,7 +82,7 @@ public class CloudManager {
 			
 			@Override
 			public void getDataOnResult(String responseBody) {
-				LogUtils.i("wzw responseBody:" + responseBody);
+				LogUtils.i("ll1 responseBody:" + responseBody);
 				if (responseBody == null) {
 					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
 					return;
@@ -91,7 +112,7 @@ public class CloudManager {
 			
 			@Override
 			public void getDataOnResult(String responseBody) {
-				LogUtils.i("wzw responseBody:" + responseBody);
+				LogUtils.i("ll1 responseBody:" + responseBody);
 				if (responseBody == null) {
 					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
 					return;
@@ -115,6 +136,34 @@ public class CloudManager {
 		bean.setToken(mShopBean.getToken());
 		return DataUtils.beanToJson(bean);
 	}
+
+	public void requestDeviceFoodList(final CloudInterface cloudInterface) {
+		if (mShopBean == null) {
+			cloudInterface.cloudCallback(CloudResponseStatus.Failed, null);
+			return;
+		}
+		NetworkAsyncTask networkAsyncTask = new NetworkAsyncTask(new DataManagerInterface() {
+			
+			@Override
+			public void getDataOnResult(String responseBody) {
+				LogUtils.i("ll1 responseBody:" + responseBody);
+				if (responseBody == null) {
+					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
+					return;
+				}
+				DeviceFoodBean info = (DeviceFoodBean) DataUtils.getObject(DeviceFoodBean.class, responseBody);
+				if (info.getErrorcode() == 0) {
+					cloudInterface.cloudCallback(CloudResponseStatus.Succ, info);
+				} else {
+					cloudInterface.cloudCallback(CloudResponseStatus.Failed, info);
+				}
+			}
+		});
+		RequestFoodBean bean = new RequestFoodBean();
+		bean.setShopID(mShopBean.getShopID());
+		String requestString = DataUtils.beanToJson(bean);
+		networkAsyncTask.setUrl(URL_request_machine_food_store).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
+	}
 	
 	public void requestFoodList(final CloudInterface cloudInterface) {
 		if (mShopBean == null) {
@@ -125,7 +174,7 @@ public class CloudManager {
 			
 			@Override
 			public void getDataOnResult(String responseBody) {
-				LogUtils.i("wzw responseBody:" + responseBody);
+				LogUtils.i("ll1 responseBody:" + responseBody);
 				if (responseBody == null) {
 					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
 					return;
@@ -141,10 +190,17 @@ public class CloudManager {
 		RequestFoodBean bean = new RequestFoodBean();
 		bean.setShopID(mShopBean.getShopID());
 		String requestString = DataUtils.beanToJson(bean);
-		networkAsyncTask.setUrl(URL_request_foodlist).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
+		networkAsyncTask.setUrl(URL_request_shop_food_store).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
 	}
 	
-	public void modifyFoodStatus(final CloudInterface cloudInterface, String foodID, String number) {
+	/**
+	 * 
+	 * @param cloudInterface
+	 * @param foodID
+	 * @param type 1add 2delete 3modify
+	 * @param total
+	 */
+	public void modifyDeviceFood(final CloudInterface cloudInterface, String slotID, int type, int total) {
 		if (mShopBean == null) {
 			cloudInterface.cloudCallback(CloudResponseStatus.Failed, null);
 			return;
@@ -153,7 +209,42 @@ public class CloudManager {
 			
 			@Override
 			public void getDataOnResult(String responseBody) {
-				LogUtils.i("wzw responseBody:" + responseBody);
+				LogUtils.i("ll1 responseBody:" + responseBody);
+				if (responseBody == null) {
+					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
+					return;
+				}
+				MsgBean info = (MsgBean) DataUtils.getObject(MsgBean.class, responseBody);
+				if (info.getErrorcode() == 0) {
+					cloudInterface.cloudCallback(CloudResponseStatus.Succ, info);
+				} else {
+					cloudInterface.cloudCallback(CloudResponseStatus.Failed, info);
+				}
+			}
+		});
+		ModifyDeviceFoodBean bean = new ModifyDeviceFoodBean();
+		List<InnerModifyDeviceFoodBean> InnerbeanList = new ArrayList<InnerModifyDeviceFoodBean>();
+		InnerModifyDeviceFoodBean Innerbean = new InnerModifyDeviceFoodBean();
+		Innerbean.setSlotID(slotID);
+		Innerbean.setTotal(total);
+		Innerbean.setType(type);
+		InnerbeanList.add(Innerbean);
+		bean.setSlotList(InnerbeanList);
+		String requestString = DataUtils.beanToJson(bean);
+		LogUtils.i("ll1 requestString:" + requestString);
+		networkAsyncTask.setUrl(URL_modify_machine_food_store).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
+	}
+	
+	public void modifyFood(final CloudInterface cloudInterface, String foodID, int type, int total) {
+		if (mShopBean == null) {
+			cloudInterface.cloudCallback(CloudResponseStatus.Failed, null);
+			return;
+		}
+		NetworkAsyncTask networkAsyncTask = new NetworkAsyncTask(new DataManagerInterface() {
+			
+			@Override
+			public void getDataOnResult(String responseBody) {
+				LogUtils.i("ll1 responseBody:" + responseBody);
 				if (responseBody == null) {
 					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
 					return;
@@ -167,13 +258,75 @@ public class CloudManager {
 			}
 		});
 		ModifyFoodBean bean = new ModifyFoodBean();
-		bean.setFoodID(foodID);
-		bean.setNumber(number);
-		bean.setShopID(mShopBean.getShopID());
+		bean.setFoodId(foodID);
+		bean.setTotal(total);
+		bean.setType(type);
+		bean.setStoreId(mShopBean.getShopID());
 		String requestString = DataUtils.beanToJson(bean);
+		LogUtils.i("ll1 requestString:" + requestString);
 		networkAsyncTask.setUrl(URL_modify_food).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
 	}
 	
+	public void requestCabinetList(final CloudInterface cloudInterface) {
+		if (mShopBean == null) {
+			cloudInterface.cloudCallback(CloudResponseStatus.Failed, null);
+			return;
+		}
+		NetworkAsyncTask networkAsyncTask = new NetworkAsyncTask(new DataManagerInterface() {
+			
+			@Override
+			public void getDataOnResult(String responseBody) {
+				LogUtils.i("ll1 responseBody:" + responseBody);
+				if (responseBody == null) {
+					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
+					return;
+				}
+				CabinetBean info = (CabinetBean) DataUtils.getObject(CabinetBean.class, responseBody);
+				if (info.getErrorcode() == 0) {
+					cloudInterface.cloudCallback(CloudResponseStatus.Succ, info);
+				} else {
+					cloudInterface.cloudCallback(CloudResponseStatus.Failed, info);
+				}
+			}
+		});
+		RequestWithStoreIdBean bean = new RequestWithStoreIdBean();
+		bean.setStoreId(mShopBean.getShopID());
+		String requestString = DataUtils.beanToJson(bean);
+		networkAsyncTask.setUrl(URL_request_cabinet_info).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
+	}
+	
+	public void modifyCabinet(final CloudInterface cloudInterface, String doorId, boolean frontDoor, String status) {
+		if (mShopBean == null) {
+			cloudInterface.cloudCallback(CloudResponseStatus.Failed, null);
+			return;
+		}
+		NetworkAsyncTask networkAsyncTask = new NetworkAsyncTask(new DataManagerInterface() {
+			
+			@Override
+			public void getDataOnResult(String responseBody) {
+				LogUtils.i("ll1 responseBody:" + responseBody);
+				if (responseBody == null) {
+					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
+					return;
+				}
+				MsgBean info = (MsgBean) DataUtils.getObject(MsgBean.class, responseBody);
+				if (info.getErrorcode() == 0) {
+					cloudInterface.cloudCallback(CloudResponseStatus.Succ, info);
+				} else {
+					cloudInterface.cloudCallback(CloudResponseStatus.Failed, info);
+				}
+			}
+		});
+		ModifyCabinetBean bean = new ModifyCabinetBean();
+		bean.setDoorId(doorId);
+		bean.setStatus(status);
+		bean.setDoorDirection(frontDoor ? "frontDoor" : "backDoor");
+		String requestString = DataUtils.beanToJson(bean);
+		LogUtils.i("ll1 requestString:" + requestString);
+		networkAsyncTask.setUrl(URL_modify_cabinet_status).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
+	}
+	
+	@Deprecated
 	public void requestDevList(final CloudInterface cloudInterface) {
 		if (mShopBean == null) {
 			cloudInterface.cloudCallback(CloudResponseStatus.Failed, null);
@@ -183,7 +336,7 @@ public class CloudManager {
 			
 			@Override
 			public void getDataOnResult(String responseBody) {
-				LogUtils.i("wzw responseBody:" + responseBody);
+				LogUtils.i("ll1 responseBody:" + responseBody);
 				if (responseBody == null) {
 					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
 					return;
@@ -203,6 +356,7 @@ public class CloudManager {
 		networkAsyncTask.setUrl(URL_request_shop_devices).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
 	}
 	
+	@Deprecated
 	public void ModifyDevStatus(final CloudInterface cloudInterface, String deviceID, int status) {
 		if (mShopBean == null) {
 			cloudInterface.cloudCallback(CloudResponseStatus.Failed, null);
@@ -212,7 +366,7 @@ public class CloudManager {
 			
 			@Override
 			public void getDataOnResult(String responseBody) {
-				LogUtils.i("wzw responseBody:" + responseBody);
+				LogUtils.i("ll1 responseBody:" + responseBody);
 				if (responseBody == null) {
 					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
 					return;
@@ -233,7 +387,7 @@ public class CloudManager {
 		networkAsyncTask.setUrl(URL_modify_device_status).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
 	}
 	
-	public void requestShopOrderList(final CloudInterface cloudInterface, int pageIndex) {
+	public void requestShopOrderList(final CloudInterface cloudInterface, String orderId) {
 		if (mShopBean == null) {
 			cloudInterface.cloudCallback(CloudResponseStatus.Failed, null);
 			return;
@@ -242,7 +396,7 @@ public class CloudManager {
 			
 			@Override
 			public void getDataOnResult(String responseBody) {
-				LogUtils.i("wzw responseBody:" + responseBody);
+				LogUtils.i("ll1 responseBody:" + responseBody);
 				if (responseBody == null) {
 					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
 					return;
@@ -259,12 +413,13 @@ public class CloudManager {
 		bean.setToken(mShopBean.getToken());
 		bean.setShopID(mShopBean.getShopID());
 //		bean.setShopID("1");
-		bean.setPageIndex(pageIndex);
+		bean.setOrderId(orderId);
 		String requestString = DataUtils.beanToJson(bean);
 		networkAsyncTask.setUrl(URL_request_info).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
 	}
 	
-	public void requestOrderList(final CloudInterface cloudInterface, int pageIndex, String orderState) {
+	public void requestUnusedCabinet(final CloudInterface cloudInterface, int orderId) {
+		
 		if (mShopBean == null) {
 			cloudInterface.cloudCallback(CloudResponseStatus.Failed, null);
 			return;
@@ -273,7 +428,68 @@ public class CloudManager {
 			
 			@Override
 			public void getDataOnResult(String responseBody) {
-				LogUtils.i("wzw responseBody:" + responseBody);
+				LogUtils.i("ll1 responseBody:" + responseBody);
+				if (responseBody == null) {
+					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
+					return;
+				}
+				DoorBean info = (DoorBean) DataUtils.getObject(DoorBean.class, responseBody);
+				if (info.getErrorcode() == 0) {
+					cloudInterface.cloudCallback(CloudResponseStatus.Succ, info);
+				} else {
+					cloudInterface.cloudCallback(CloudResponseStatus.Failed, info);
+				}
+			}
+		});
+		RequestWithStoreIdBean bean = new RequestWithStoreIdBean();
+		bean.setStoreId(mShopBean.getShopID());
+		bean.setOrderId(orderId + "");
+		String requestString = DataUtils.beanToJson(bean);
+		LogUtils.i("ll1 requestString:" + requestString);
+		networkAsyncTask.setUrl(URL_find_unused_cabinet).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
+	}
+	public void requestFoodStore(final CloudInterface cloudInterface, String foodId) {
+		
+		if (mShopBean == null) {
+			cloudInterface.cloudCallback(CloudResponseStatus.Failed, null);
+			return;
+		}
+		NetworkAsyncTask networkAsyncTask = new NetworkAsyncTask(new DataManagerInterface() {
+			
+			@Override
+			public void getDataOnResult(String responseBody) {
+				LogUtils.i("ll1 responseBody:" + responseBody);
+				if (responseBody == null) {
+					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
+					return;
+				}
+				ResponseFoodStoreBean info = (ResponseFoodStoreBean) DataUtils.getObject(ResponseFoodStoreBean.class, responseBody);
+				if (info.getErrorcode() == 0) {
+					cloudInterface.cloudCallback(CloudResponseStatus.Succ, info);
+				} else {
+					cloudInterface.cloudCallback(CloudResponseStatus.Failed, info);
+				}
+			}
+		});
+		RequestFoodStoreBean bean = new RequestFoodStoreBean();
+		bean.setStoreId(mShopBean.getShopID());
+		bean.setFoodId(foodId);
+		String requestString = DataUtils.beanToJson(bean);
+		LogUtils.i("ll1 requestString:" + requestString);
+		networkAsyncTask.setUrl(URL_request_food_store).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
+	}
+	
+	
+	public void requestOrderList(final CloudInterface cloudInterface, int devType, String orderId, String orderState) {
+		if (mShopBean == null) {
+			cloudInterface.cloudCallback(CloudResponseStatus.Failed, null);
+			return;
+		}
+		NetworkAsyncTask networkAsyncTask = new NetworkAsyncTask(new DataManagerInterface() {
+			
+			@Override
+			public void getDataOnResult(String responseBody) {
+				LogUtils.i("ll1 responseBody:" + responseBody);
 				if (responseBody == null) {
 					cloudInterface.cloudCallback(CloudResponseStatus.ErrorNetwork, null);
 					return;
@@ -289,10 +505,12 @@ public class CloudManager {
 		RequestOrderListBean bean = new RequestOrderListBean();
 		bean.setToken(mShopBean.getToken());
 		bean.setShopID(mShopBean.getShopID());
+		bean.setDevType(devType);
+		bean.setOrderId(orderId);
 //		bean.setShopID("1");
 		bean.setOrderState(orderState);
-		bean.setPageIndex(pageIndex);
 		String requestString = DataUtils.beanToJson(bean);
+		LogUtils.i("ll1 requestString:" + requestString);
 		networkAsyncTask.setUrl(URL_request_order_list).setRequestType(NetworkAsyncTask.TYPE_POST).setRequestBody(requestString).execute();
 	}
 }

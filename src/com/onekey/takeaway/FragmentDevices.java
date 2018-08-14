@@ -1,35 +1,44 @@
 package com.onekey.takeaway;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import mythware.http.CloudUpdateVersionServer.CloudInterface;
 import mythware.http.CloudUpdateVersionServer.CloudResponseStatus;
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.GridView;
+import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ab.fragment.AbAlertDialogFragment.AbDialogOnClickListener;
 import com.ab.util.AbDialogUtil;
+import com.ab.util.AbToastUtil;
 import com.onekey.common.LogUtils;
 import com.onekey.http.CloudManager;
-import com.onekey.takeaway.bean.DeviceBean;
-import com.onekey.takeaway.bean.DeviceBean.InnerDeviceBean;
-import com.onekey.takeaway.ux.DataListAdapter;
-import com.onekey.takeaway.ux.DataListAdapter.ListAdapterInterface;
-import com.onekey.takeaway.ux.DataListAdapter.ViewHolder;
+import com.onekey.takeaway.bean.DeviceFoodBean;
+import com.onekey.takeaway.bean.DeviceFoodBean.InnerDeviceBean;
+import com.onekey.takeaway.bean.DeviceFoodBean.InnerDeviceFoodBean;
+import com.onekey.takeaway.ux.DataExpanableListAdapter;
+import com.onekey.takeaway.ux.DataExpanableListAdapter.ChildListAdapterInterface;
+import com.onekey.takeaway.ux.DataExpanableListAdapter.ParentListAdapterInterface;
+import com.onekey.takeaway.ux.DataExpanableListAdapter.ViewHolder;
 
 public class FragmentDevices extends Fragment {
-	GridView mGridView;
-	private DataListAdapter<InnerDeviceBean> mDataListAdapter;
+	ExpandableListView mExpandableListView;
+	private DataExpanableListAdapter<InnerDeviceFoodBean> mDataExpanableListAdapter;
 	String mName = "智能配餐柜";
-
+	public static final String CFJ = FragmentStore.tab1;
+	public static final String STJ = FragmentStore.tab2;
+	private String mCurrentType = CFJ;
+	
 	public static FragmentDevices newInstance(String text) {
 		FragmentDevices fragmentCommon = new FragmentDevices();
 		Bundle bundle = new Bundle();
@@ -53,18 +62,30 @@ public class FragmentDevices extends Fragment {
 //			list.add(bean);
 //		}
 //		mDataListAdapter.setShowDataList(list);
-		CloudManager.getInstance().requestDevList(new CloudInterface() {
+		CloudManager.getInstance().requestDeviceFoodList(new CloudInterface() {
 			
 			@Override
 			public void cloudCallback(CloudResponseStatus arg0, Object arg1) {
 				if (arg0 == CloudResponseStatus.Succ) {
-					DeviceBean DeviceBean = (com.onekey.takeaway.bean.DeviceBean) arg1;
-					LogUtils.d("ll1 size=" + DeviceBean.getDevList().size());
-					InnerDeviceBean InnerDeviceBean = new InnerDeviceBean();
-					InnerDeviceBean.setDeviceID("123");
-					InnerDeviceBean.setName(mName);
-					DeviceBean.addDev(InnerDeviceBean);
-					mDataListAdapter.setShowDataList(DeviceBean.getDevList());
+					DeviceFoodBean DeviceFoodBean = (DeviceFoodBean) arg1;
+					Map<String, List<InnerDeviceFoodBean>> cList = new ArrayMap<String, List<InnerDeviceFoodBean>> ();
+					for (InnerDeviceBean item : DeviceFoodBean.getDevicelist()) {
+						if (mCurrentType.equals(CFJ)) {
+							if (item.getDeviceType() == 1) {
+								// caofanji
+								cList.put(item.getDeviceID(), item.getSlots());
+							}
+						} else {
+							if (item.getDeviceType() == 2) {
+								// soutangji 
+								cList.put(item.getDeviceID(), item.getSlots());
+							}
+						}
+						
+					}
+					LogUtils.i("ll1 cList:" + cList);
+					LogUtils.i("ll1 mDataExpanableListAdapter:" + mDataExpanableListAdapter);
+					mDataExpanableListAdapter.setShowList(cList);
 
 				}
 			}
@@ -76,166 +97,156 @@ public class FragmentDevices extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater
 				.inflate(R.layout.fragment_device, container, false);
-		mGridView = (GridView) view.findViewById(R.id.gridView);
-		mDataListAdapter = new DataListAdapter<InnerDeviceBean>(getActivity(), new DataListAdapter.ListAdapterInterface<InnerDeviceBean>() {
-
+		mCurrentType = getArguments().getString("text");
+		mExpandableListView = (ExpandableListView) view.findViewById(R.id.expandable_list);
+		mExpandableListView.setOnGroupClickListener(new OnGroupClickListener() {
+			
 			@Override
-			public int getLayoutId() {
-				return R.layout.item_fragment_devices;
-			}
-
-			@Override
-			public void regesterListeners(ViewHolder viewHolder, int position) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@SuppressLint("ResourceAsColor") @Override
-			public void initListViewItem(View convertView, final ViewHolder holder,
-					DataListAdapter<InnerDeviceBean> adapter, int position) {
-				// TODO Auto-generated method stub
-				final InnerDeviceBean bean = adapter.getItem(position);
-				
-				holder.tvs[0].setText(bean.getName());
-				holder.tvs[1].setText(bean.getDeviceID());
-				holder.tvs[2].setText(bean.getStatus());
-				if (bean.getStatusInt() == 3) {
-					holder.tvs[2].setTextColor(getResources().getColor(android.R.color.holo_red_light));
+			public boolean onGroupClick(ExpandableListView parent, View v,
+					int groupPosition, long id) {
+				ImageView iv = (ImageView) v.findViewById(R.id.iv_arrow);
+				if ( parent.isGroupExpanded( groupPosition ) ){
+					iv.setImageDrawable(getResources().getDrawable(R.drawable.right_arrow));
 				} else {
-					holder.tvs[2].setTextColor(getResources().getColor(android.R.color.white));
+					iv.setImageDrawable(getResources().getDrawable(R.drawable.down_arrow));
 				}
-				holder.tvs[2].setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						if (bean.getName().equals(mName)) {
-							View view = inflater.inflate(R.layout.listview, null);
-							GridView gridView = (GridView) view.findViewById(R.id.lv);
-							List<String> list = new ArrayList<String>();
-							for (int i = 0; i < 12; i++) {
-								list.add("编号:" + (i + 1));
-							}
-							DataListAdapter<String> adapter = new DataListAdapter<String>(getActivity(), new ListAdapterInterface<String>() {
-
-								@Override
-								public int getLayoutId() {
-									return R.layout.item_pcg;
-								}
-
-								@Override
-								public void regesterListeners(
-										ViewHolder viewHolder, int position) {
-									// TODO Auto-generated method stub
-									holder.tvs[0].setOnClickListener(new OnClickListener() {
-										
-										@Override
-										public void onClick(View v) {
-											// TODO Auto-generated method stub
-											
-										}
-									});
-								}
-
-								@Override
-								public void initListViewItem(View convertView,
-										ViewHolder holder,
-										DataListAdapter<String> adapter,
-										int position) {
-									LogUtils.e("ll1 adapter.getItem(position)=" + adapter.getItem(position) + " pos:" + position);
-									holder.tvs[0].setText(adapter.getItem(position));
-								}
-
-								@Override
-								public void initLayout(View convertView,
-										ViewHolder holder) {
-
-									holder.tvs = new TextView[1];
-									holder.tvs[0] = (TextView)convertView.findViewById(R.id.textView);
-								}
-
-								@Override
-								public boolean isSameObject(String t1, String t2) {
-									// TODO Auto-generated method stub
-									return false;
-								}
-							}) ;
-							LogUtils.e("ll1 list=" + list);
-							gridView.setAdapter(adapter);
-							adapter.setShowDataList(list);
-							AbDialogUtil.showAlertDialog("修改配餐柜状态", gridView);
-							return;
-						}
-						if (bean.getStatusInt() == 3) {
-							AbDialogUtil.showAlertDialog(getActivity(), "修改状态", "确认要上架该设备吗？", new AbDialogOnClickListener() {
-								
-								@Override
-								public void onPositiveClick() {
-									CloudManager.getInstance().ModifyDevStatus(new CloudInterface() {
-										
-										@Override
-										public void cloudCallback(CloudResponseStatus arg0, Object arg1) {
-											if (arg0 == CloudResponseStatus.Succ) {
-												bean.setStatus(0);
-												holder.tvs[2].setText("空闲");
-												holder.tvs[2].setTextColor(getResources().getColor(android.R.color.white));
-											}
-										}
-									}, bean.getDeviceID(), 0);
-								}
-								
-								@Override
-								public void onNegativeClick() {
-									AbDialogUtil.removeDialog(getActivity());
-								}
-							});
-						} else {
-							AbDialogUtil.showAlertDialog(getActivity(), "修改状态", "确认要下架该设备吗？", new AbDialogOnClickListener() {
-								
-								@Override
-								public void onPositiveClick() {
-									CloudManager.getInstance().ModifyDevStatus(new CloudInterface() {
-										
-										@Override
-										public void cloudCallback(CloudResponseStatus arg0, Object arg1) {
-											if (arg0 == CloudResponseStatus.Succ) {
-												bean.setStatus(3);
-												holder.tvs[2].setText("故障");
-												holder.tvs[2].setTextColor(getResources().getColor(android.R.color.holo_red_light));
-											}
-										}
-									}, bean.getDeviceID(), 3);
-								}
-								
-								@Override
-								public void onNegativeClick() {
-									AbDialogUtil.removeDialog(getActivity());
-								}
-							});
-						}
-						
-					}
-				});
-			}
-
-			@SuppressLint("ResourceAsColor") @Override
-			public void initLayout(View convertView, ViewHolder holder) {
-				// TODO Auto-generated method stub
-				convertView.setBackgroundColor(getResources().getColor(R.color.title));
-				holder.tvs = new TextView[3];
-				holder.tvs[0] = (TextView)convertView.findViewById(R.id.tv1);
-				holder.tvs[1] = (TextView)convertView.findViewById(R.id.tv2);
-				holder.tvs[2] = (TextView)convertView.findViewById(R.id.tv3);
-				
-			}
-
-			@Override
-			public boolean isSameObject(InnerDeviceBean t1, InnerDeviceBean t2) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		});
 		
-		mGridView.setAdapter(mDataListAdapter);
+		ParentListAdapterInterface parentManager = new ParentListAdapterInterface() {
+
+			@Override
+			public int getParentLayoutId() {
+				return R.layout.expandlist_group;
+			}
+
+			@Override
+			public void regesterParentListeners(ViewHolder viewHolder,
+					int position) {
+			}
+
+			@Override
+			public void initParentListViewItem(View convertView,
+					ViewHolder holder, DataExpanableListAdapter<?> adapter,
+					int groupPosition) {
+				LogUtils.i("wzw groupPosition=" + groupPosition);
+				holder.tvs[0].setText(adapter.getGroup(groupPosition));
+			}
+
+			@Override
+			public void initParentLayout(View convertView, ViewHolder holder) {
+				holder.tvs = new TextView[1];
+				holder.tvs[0] = (TextView)convertView.findViewById(R.id.tv_group_name);
+				holder.ivs = new ImageView[1];
+				holder.ivs[0] = (ImageView) convertView.findViewById(R.id.iv_arrow);
+			}
+			
+		};
+		ChildListAdapterInterface childManager = new ChildListAdapterInterface<InnerDeviceFoodBean>() {
+
+			@Override
+			public int getChildLayoutId() {
+				return R.layout.expandlist_item;
+			}
+
+			@Override
+			public View getChildHeaderView() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public void regesterChildListeners(final ViewHolder viewHolder,
+					final int position) {
+				viewHolder.ivs[0].setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						final View view = inflater.inflate(R.layout.edittext, null);
+						AbDialogUtil.showAlertDialog("请输入数量", view, new AbDialogOnClickListener() {
+							
+							@Override
+							public void onPositiveClick() {
+								final EditText EditText = (EditText)view.findViewById(R.id.et);
+								if (EditText.getText().toString().isEmpty()) {
+									AbToastUtil.showToast(getActivity(), "请输入修改数量");
+									return;
+								}
+								int number = Integer.parseInt(EditText.getText().toString());
+								int type = 1;
+								int stock = mDataExpanableListAdapter.getItem(position).getStock();
+								
+								if (number == stock) {
+									return;
+								}
+								if (number > stock) {
+									number -= stock;
+								} else {
+									type = 2;
+									number = stock - number;
+								}
+								CloudManager.getInstance().modifyDeviceFood(new CloudInterface() {
+									
+									@Override
+									public void cloudCallback(CloudResponseStatus arg0, Object arg1) {
+										if (arg0 == CloudResponseStatus.Succ) {
+//											bean.setTotal(EditText.getText().toString());
+											viewHolder.tvs[2].setText(EditText.getText().toString());
+											int num = Integer.parseInt(EditText.getText().toString());
+											mDataExpanableListAdapter.getItem(position).setStock(num);
+										}
+									}
+								}, mDataExpanableListAdapter.getItem(position).getSlotCode(), type, number);
+							}
+							
+							@Override
+							public void onNegativeClick() {
+								AbDialogUtil.removeDialog(getActivity());
+							}
+						});
+					}
+				});
+			}
+
+			@Override
+			public void initChildListViewItem(View convertView,
+					ViewHolder holder,
+					DataExpanableListAdapter<InnerDeviceFoodBean> adapter,
+					int position) {
+
+				LogUtils.i("wzw position=" + position);
+				holder.tvs[0].setText(adapter.getItem(position).getSlotCode());
+				holder.tvs[1].setText(adapter.getItem(position).getFoodName());
+				holder.tvs[2].setText(adapter.getItem(position).getStock() + "");
+			}
+
+			@Override
+			public void initChildLayout(View convertView, ViewHolder holder) {
+
+				holder.tvs = new TextView[3];
+				holder.tvs[0] = (TextView)convertView.findViewById(R.id.tv1);			
+				holder.tvs[1] = (TextView)convertView.findViewById(R.id.tv2);			
+				holder.tvs[2] = (TextView)convertView.findViewById(R.id.tv3);
+				holder.ivs = new ImageView[1];	
+				holder.ivs[0] = (ImageView)convertView.findViewById(R.id.iv);				
+			}
+
+			@Override
+			public List<InnerDeviceFoodBean> findByCondition(Object... condition) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public boolean isSameObject(InnerDeviceFoodBean c1, InnerDeviceFoodBean c2) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		};
+		mDataExpanableListAdapter = new DataExpanableListAdapter<InnerDeviceFoodBean>(getActivity(), parentManager, childManager, mExpandableListView);
+		
+		mExpandableListView.setAdapter(mDataExpanableListAdapter);
 		
 		initData();
 		return view;

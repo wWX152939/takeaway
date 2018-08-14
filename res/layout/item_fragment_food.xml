@@ -32,12 +32,6 @@
 		android:layout_width="0dp"
 		android:layout_weight="1"
 		android:layout_height="match_parent"
-		style="@style/textViewOrder" />
-	<TextView 
-	    android:id="@+id/tv3"
-		android:layout_width="0dp"
-		android:layout_weight="1"
-		android:layout_height="match_parent"
 		android:drawableRight="@drawable/icon_modify"
 		android:paddingRight="20dp"
 		style="@style/textViewOrder"

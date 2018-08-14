@@ -20,7 +20,7 @@
         	android:listSelector="@null"
 	       />
 	</com.ab.view.pullview.AbPullToRefreshView>
-	<LinearLayout 
+<!--	<LinearLayout 
         android:id="@+id/ll"
         android:layout_width="match_parent"
 	    android:layout_height="0dp"
@@ -53,5 +53,5 @@
 			android:layout_height="match_parent"
 			android:text="@string/pcg"
 			style="@style/textViewOrder" />
-    </LinearLayout>
+    </LinearLayout> -->
 </LinearLayout>

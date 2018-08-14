@@ -38,6 +38,10 @@ public class FragmentCount extends Fragment {
 	}
 	
 	void loadData() {
+		String lastOrderId = "";
+		if (mDataListAdapter.getDataShowList().size() != 0) {
+			lastOrderId = mDataListAdapter.getDataShowList().get(mDataListAdapter.getDataShowList().size() -1).getOrderId() + "";
+		}
 		CloudManager.getInstance().requestShopOrderList(new CloudInterface() {
 			
 			@Override
@@ -51,7 +55,7 @@ public class FragmentCount extends Fragment {
 				}
 				mAbPullToRefreshView.onFooterLoadFinish();
 			}
-		}, mCurrentPage++);
+		}, "");
 	}
 	
 	@Override
@@ -79,21 +83,23 @@ public class FragmentCount extends Fragment {
 					DataListAdapter<InnerShopOrderBean> adapter, int position) {
 				// TODO Auto-generated method stub
 				InnerShopOrderBean bean = adapter.getItem(position);
-				holder.tvs[0].setText(bean.getNumber());
+				holder.tvs[0].setText(bean.getOrderId() + "");
 				holder.tvs[1].setText(bean.getCustom());
 				holder.tvs[2].setText(bean.getFood());
 				holder.tvs[3].setText(bean.getPay() + "");
+				holder.tvs[4].setText(bean.getGenTime());
 			}
 
 			@Override
 			public void initLayout(View convertView, ViewHolder holder) {
 				// TODO Auto-generated method stub
 				convertView.setBackgroundColor(getResources().getColor(R.color.title));
-				holder.tvs = new TextView[4];
+				holder.tvs = new TextView[5];
 				holder.tvs[0] = (TextView)convertView.findViewById(R.id.tv1);
 				holder.tvs[1] = (TextView)convertView.findViewById(R.id.tv2);
 				holder.tvs[2] = (TextView)convertView.findViewById(R.id.tv3);
 				holder.tvs[3] = (TextView)convertView.findViewById(R.id.tv4);
+				holder.tvs[4] = (TextView)convertView.findViewById(R.id.tv11);
 				
 			}
 
@@ -131,7 +137,7 @@ public class FragmentCount extends Fragment {
 						}
 						mAbPullToRefreshView.onHeaderRefreshFinish();
 					}
-				}, mCurrentPage++);
+				}, "");
 			}
 		});
 		

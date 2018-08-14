@@ -19,6 +19,7 @@
 		android:layout_weight="1"
 		android:layout_height="match_parent"
 		android:text="@string/device_type"
+		android:visibility="gone"
 		style="@style/textViewOrder" />
 	<TextView 
 	    android:id="@+id/tv3"
@@ -40,6 +41,15 @@
 		
 		 />
 	<TextView 
+	    android:id="@+id/tv41"
+		android:layout_width="0dp"
+		android:layout_weight="1"
+		android:layout_height="match_parent"
+		style="@style/textViewOrder"
+		android:text="@string/pay_time"
+		
+		 />
+	<TextView 
 	    android:id="@+id/tv5"
 		android:layout_width="0dp"
 		android:layout_weight="1"
@@ -56,6 +66,7 @@
 		android:layout_height="match_parent"
 		style="@style/textViewOrder"
 		android:text="@string/door_id"
+		android:visibility="gone"
 		
 		 />
 	<TextView 
